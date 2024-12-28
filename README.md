@@ -1,32 +1,100 @@
-This custom-made hashing algorithm is ASCII based Algorithm, where set of operations are performed onto the ASCII value of the input string and then once those operations are completed the resulting values are converted back into printable characters by mapping the value (modified ASCII) to its corresponding character.
+# nashx
 
-1.	Working of this Hashing Algorithm:
-ASCII Conversion: The function first converts each character in the input string to its ASCII value and stores these values in a list called asci.
-2.	Transformation Step 1: Each ASCII value is then transformed by multiplying it by 3 and adding 1.
-3.	Transformation Step 2: Each resulting value from the previous step is divided by 2.45.
-4.	Normalization: The normalize_to_range function normalizes the transformed ASCII values to a specified range (33 to 126 in this case, corresponding to printable ASCII characters). This ensures that the final ASCII values can be converted back to printable characters.
-5.	Length Adjustment and Modulation: The code then creates a new list, final_asci1, by looping over the normalized ASCII values. It ensures the list has the same length as specified by the length parameter. For each index, it calculates a new value by adding the index to the corresponding ASCII value, modulo 94 (to keep it within the printable ASCII range), and then adding 33 to shift it back into the printable range.
-6.	Summation and Condition: The sum of the elements in final_asci1 is calculated. Then the sum of the digits of this sum is found (digit_sum). Depending on the value of digit_sum modulo 7, one of three different transformations is applied to create a new list, final_asci2:
-•	If digit_sum % 7 is 0, each value is multiplied by its index (plus one), modulo 94, plus 33.
-•	If digit_sum % 7 is 1, 3, or 5, each value is raised to the power of (index + 2), modulo 94, plus 33.
-•	Otherwise, the absolute difference between each value and its index is taken, modulo 94, plus 33.
-7.	Character Conversion: The values in final_asci2 are converted back to characters using the chr function.
-8.	Final Hash Generation: The characters are concatenated to form the final hashed string, which is returned by the function.
+`nashx` is a simple yet efficient Python hashing library that allows users to generate hashes with customizable lengths. The package includes two distinct functions for hashing:
 
+- **`nashCore`**: A deterministic hashing function.
+- **`nashGuard`**: A salted hashing function that adds an extra layer of security.
 
+## Changes in Version 0.2
 
-Examples:
-1.	Input: Naman, 15
-Output: “Xc:;C89n3K:]t}k”
+In version 0.2, we have introduced the following improvements:
+- **`nashCore`**: A deterministic version of the original `hasher` function, which generates consistent hashes for the same input.
+- **`nashGuard`**: A new salted hash function. This function adds complexity by incorporating a salt into the hashing process, making the hash more secure. The function also generates the salt if it is not provided.
+- **Updated Function Names**: The old `hasher` function has been replaced with `nashCore` for deterministic hashing and `nashGuard` for salted hashing.
 
-2.	Input: naman, 15
-Output: “AA7?=<<2:877-53”
+## Installation
 
-3.	Input: MMCOE, 15
-Output: “10@>M,+;9H'&64C”
+You can install the `nashx` package via `pip`:
 
-4.	Input: mMMCoE, 15
-Output: “h/%|CR$3A0=*bSe”
+```bash
+pip install nashx
+```
 
+## Usage
 
-Above are few Examples of the Hashes generated for the given input of the data. Also, the examples show the Avalanche Effect, which is that changing of one-character results in generation of entirely new hash even if its just a difference of uppercase and lowercase.
+### 1. `nashCore` (Deterministic Hashing)
+
+The `nashCore` function generates a deterministic hash, meaning that the same input will always produce the same output hash.
+
+```python
+from nashx import nashCore
+
+data = "example"
+hash_length = 16
+hash_result = nashCore(data, hash_length)
+print("Deterministic Hash:", hash_result)
+```
+
+### 2. `nashGuard` (Salted Hashing)
+
+The `nashGuard` function generates a salted hash. If the salt is not provided, it will generate one internally. The function returns both the hash and the salt.
+
+#### Example with generated salt:
+
+```python
+from nashx import nashGuard
+
+data = "example"
+hash_length = 16
+
+# If salt is not provided, nashGuard will generate one
+hash_result, salt_used = nashGuard(data, hash_length)
+print("Salted Hash:", hash_result)
+print("Salt Used:", salt_used)
+```
+
+#### Example with custom salt:
+
+```python
+salt = "your_preferred_salt_value"
+hash_result, salt_used = nashGuard(data, hash_length, salt)
+print("Salted Hash with Custom Salt:", hash_result)
+print("Salt Used:", salt_used)
+```
+
+## Function Explanation
+
+### `nashCore(words, length)`
+
+- **Parameters:**
+  - `words`: The input string to be hashed.
+  - `length`: The desired length of the generated hash.
+- **Returns:** A deterministic hash of the input string.
+
+### `nashGuard(words, length, salt=None)`
+
+- **Parameters:**
+  - `words`: The input string to be hashed.
+  - `length`: The desired length of the generated hash.
+  - `salt`: The optional salt to be used in the hash. If not provided, the function will generate a random salt.
+- **Returns:** A tuple containing the salted hash and the salt used.
+
+## Example Output
+
+### Deterministic Hash:
+```python
+Deterministic Hash: 8d40e2a833d2f67d
+```
+
+### Salted Hash (salt is generated):
+```python
+Salted Hash: 30a76f5f7585a6b9
+Salt Used: f7a3e19b8cf6c2d7
+```
+
+### Salted Hash (using provided salt):
+```python
+Salted Hash with Custom Salt: 64b38c5f7b42cbb3
+Salt Used: your_preferred_salt_value
+```
+

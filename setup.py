@@ -1,11 +1,12 @@
 from setuptools import setup
 
 
-with open("README.md", "r") as f:
+with open("README.md", "r", encoding="utf-8") as f:
     description = f.read()
+
 setup(
     name='nashx',
-    version='0.1',
+    version='0.2',
     packages=['nashx'],
     entry_points={
         'console_scripts': [
@@ -13,8 +14,8 @@ setup(
         ]
     },
     install_requires=[],
-    long_description= description,
-    long_description_content_type= "text/markdown",
+    long_description=description,
+    long_description_content_type="text/markdown",
     author='Naman Agnihotri',
     author_email='namanagnihotri280@gmail.com',
     url='https://github.com/Naman7214/NASHX.git',

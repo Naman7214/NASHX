@@ -1,1 +1,1 @@
-from .hasher import hasher
+from .hasher import nashCore, nashGuard
