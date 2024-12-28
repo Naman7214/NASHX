@@ -110,10 +110,5 @@ def nashGuard(data, length, salt=None):
     return hashed_word
 
 
-hash_result, salt_used = salted_hash(data="example", length=16)
-print("Hash:", hash_result)
-print("Salt:", salt_used)
 
-recreated_hash = salted_hash(data="example", length=16, salt=salt_used)
-print("Recreated Hash:", recreated_hash)
 
